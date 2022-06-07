@@ -1,0 +1,14 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1> Create family names</h1>
+<h4>Create family names linked to one race</h4>
+  <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{cityForm|crispy }}
+      <button type="submit" class="btn btn-outline-secondary">Create City</button>
+  </form><br><br> 
+  <a href="/npc/" class="btn btn-outline-secondary" role="button">Go Back</a>
+{% endblock content %}

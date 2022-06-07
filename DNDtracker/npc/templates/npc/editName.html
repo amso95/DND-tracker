@@ -1,0 +1,16 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1> Edit name</h1>
+<h4>Edit names linked to one race that dosen't specify genders</h4>
+<form method="post">
+  {% csrf_token %}
+  {{namesForm|crispy }}
+  <button type="submit" name="success" class="btn btn-outline-secondary" value="success">Save name</button>
+</form><br><br>
+<a href="/npc/list/name" class="btn btn-outline-secondary" role="button">Go Back</a>
+<br><br>
+<a href="/npc/" class="btn btn-outline-secondary" role="button">Go Home</a>
+{% endblock content %}

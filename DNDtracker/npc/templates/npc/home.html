@@ -1,0 +1,175 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+        <h1 style="text-shadow: 4px 4px #CEE3CE;"> Create your NPCs</h1>
+        <h4>Create and keep track of you NPCs</h4>
+        <lable>Race</lable>
+        <select id="selectedRace" class="form-control"  style="width: 50%;">
+        {% for race in races %}
+        <option name="{{race.raceName}}">{{race.raceName}}</option>
+        {% endfor %}
+        <select>
+        <br>
+        <lable>Gender</lable>
+        <br>
+        <div class="form-check">
+        <input id="f" class="form-check-input" type="checkbox">Female</input>
+        <br>
+        <input id="m" class="form-check-input" type="checkbox">Male</input>
+        <br>
+        <input id="n" class="form-check-input" type="checkbox">None</input>
+        </div>
+        <br>
+        <button class="btn btn-outline-secondary" onclick="generateName()">Generate first name</button>
+        <br>
+        <br>
+        <p id="name_error" style="color: #FF0000;"> </p>
+        <button class="btn btn-outline-secondary" onclick="generateLastName()">Generate last name</button>
+        <br>
+        <br>
+        <p id="lastname_error" style="color: #FF0000;"> </p>
+        <form method="post">
+            {% csrf_token %}
+            {{npcForm|crispy }}
+        <button type="submit" class="btn btn-outline-secondary">Create NPC</button>
+        </form>
+    <script>
+        function generateName() {
+            var femaleNames = JSON.parse("{{femaleNames|escapejs}}"); 
+            var maleNames = JSON.parse("{{maleNames|escapejs}}"); 
+            var raceJSON = JSON.parse("{{raceJSON|escapejs}}"); 
+            var noneNames = JSON.parse("{{noneNames|escapejs}}");
+            var female = document.getElementById("f");
+            var male = document.getElementById("m");
+            var none = document.getElementById("n");
+            var race = document.getElementById("selectedRace").value;
+            var random;
+            var pk;
+            var names = [];
+            document.getElementById("name_error").innerHTML = "";
+            document.getElementById("id_firstName").value = "";
+            if(female.checked && !male.checked && !none.checked)
+            {
+                for(var i = 0; i < raceJSON.length; i++)
+                {
+                    if(race == raceJSON[i].fields.raceName)
+                    {
+                        pk = raceJSON[i].pk
+                        document.getElementById("id_race").value = pk;
+                    }
+                }
+                for(var i = 0; i < femaleNames.length; i++)
+                {
+                    if(femaleNames[i].fields.race == pk)
+                    {
+                        names.push(femaleNames[i].fields.femaleName);
+                    }
+                }
+                random = Math.floor(Math.random()*names.length);
+                if(names.length > 0)
+                {
+                    document.getElementById("id_firstName").value = names[random];
+                }
+                else
+                {
+                    document.getElementById("name_error").innerHTML = "Couldn't find any first names for the selected races. Create female name to the selected race to generate a first name.";
+                }
+            }
+            else if(male.checked && !female.checked && !none.checked)
+            {
+                for(var i = 0; i < raceJSON.length; i++)
+                {
+                    if(race == raceJSON[i].fields.raceName)
+                    {
+                        pk = raceJSON[i].pk
+                        document.getElementById("id_race").value = pk;
+                    }
+                }
+                for(var i = 0; i < maleNames.length; i++)
+                {
+                    if(maleNames[i].fields.race == pk)
+                    {
+                        names.push(maleNames[i].fields.maleName);
+                    }
+                }
+                random = Math.floor(Math.random()*names.length);
+                if(names.length > 0)
+                {
+                    document.getElementById("id_firstName").value = names[random];
+                }
+                else
+                {
+                    document.getElementById("name_error").innerHTML = "Couldn't find any first names for the selected races. Create male name to the selected race to generate a first name.";
+                }
+            }
+            else if(none.checked && !female.checked && !male.checked)
+            {
+                for(var i = 0; i < raceJSON.length; i++)
+                {
+                    if(race == raceJSON[i].fields.raceName)
+                    {
+                        pk = raceJSON[i].pk
+                        document.getElementById("id_race").value = pk;
+                    }
+                }
+                for(var i = 0; i < noneNames.length; i++)
+                {
+                    if(noneNames[i].fields.race == pk)
+                    {
+                        names.push(noneNames[i].fields.name);
+                    }
+                }
+                random = Math.floor(Math.random()*names.length);
+                if(names.length > 0)
+                {
+                    document.getElementById("id_firstName").value = names[random];
+                }
+                else
+                {
+                    document.getElementById("name_error").innerHTML = "Couldn't find any first names for the selected races. Create name to the selected race to generate a first name.";
+                }
+            }
+            else{
+                document.getElementById("name_error").innerHTML = "Make sure that ONE box of the genders is checked";
+            }
+            
+        }
+        function generateLastName(){
+            var raceJSON = JSON.parse("{{raceJSON|escapejs}}"); 
+            var familyNnames = JSON.parse("{{familyNnames|escapejs}}"); 
+            var race = document.getElementById("selectedRace").value;
+            var random;
+            var pk;
+            var names = [];
+            document.getElementById("lastname_error").innerHTML = "";
+            for(var i = 0; i < raceJSON.length; i++)
+            {
+                if(race == raceJSON[i].fields.raceName)
+                {
+                    pk = raceJSON[i].pk
+                }
+            }
+            for(var i = 0; i < familyNnames.length; i++)
+            {
+                if(familyNnames[i].fields.race == pk)
+                {
+                    names.push(familyNnames[i].fields.familyName);
+                }
+            }
+            if( names.length > 0)
+            {
+                random = Math.floor(Math.random()*names.length);
+                document.getElementById("id_lastName").value = names[random];
+            }
+            else
+            {
+                document.getElementById("id_lastName").value = "";
+                document.getElementById("lastname_error").innerHTML = "Couldn't find any last names for the selected races. Create family name to the selected race to generate a last name.";
+            }
+            
+
+        }
+</script>
+{% endblock %}

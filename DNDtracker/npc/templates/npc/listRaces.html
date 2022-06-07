@@ -1,0 +1,29 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>List of all races</h1>
+<h4>Press the name of the race to go to edit</h4>
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="75%">
+  <thead>
+    <tr>
+      <th><a href="?order_by=raceName" style="color: black"> Race Name </a></th>
+      <th> Delete </th>
+    </tr>
+  </thead>
+  {% for race in races%}
+    <tr>
+      <td><a href="{% url 'npc-editRace' pk=race.pk %}" style="color: black">{{race.raceName}}</a></td>
+      <td><form action="{% url 'npc-deleteRace' race.id %}" method="post">
+        {% csrf_token %}
+        <a href="{% url 'npc-deleteRace' pk=race.pk %}" style="color: black">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </a>
+      </form></td>
+    </tr>
+  {% endfor %}
+</table>
+<br><br>
+<a href="/npc/" class="btn btn-outline-secondary" role="button">Go Back</a>
+{% endblock content %}

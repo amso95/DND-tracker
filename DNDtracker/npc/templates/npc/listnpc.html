@@ -1,0 +1,43 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>List of all NPCs</h1>
+<h4>Press the first name of the NPC to go to edit</h4>
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="75%">
+  <thead>
+    <tr>
+      <th><a href="?order_by=firstName" style="color: black"> First Name </a></th>
+      <th><a href="?order_by=lastName" style="color: black"> Last Name </a></th>
+      <th> Race </th>
+      <th> Aligment </th>
+      <th><a href="?order_by=city" style="color: black"> City </a></th>
+      <th> Role </th>
+      <th> Age </th>
+      <th> Comment </th>
+      <th> Delete </th>
+    </tr>
+  </thead>
+  {% for npc in npcs%}
+    <tr>
+      <td><a href="{% url 'npc-editNPC' pk=npc.pk %}" style="color: black">{{npc.firstName}}</a></td>
+      <td>{{npc.lastName}}</td>
+      <td>{{npc.race}}</td>
+      <td>{{npc.aligment}}</td>
+      <td>{{npc.city}}</td>
+      <td>{{npc.role}}</td>
+      <td>{{npc.age}}</td>
+      <td>{{npc.comment}}</td>
+      <td><form action="{% url 'npc-deleteNPC' npc.id %}" method="post">
+        {% csrf_token %}
+        <a href="{% url 'npc-deleteNPC' pk=npc.pk %}" style="color: black">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </a>
+      </form></td>
+    </tr>
+  {% endfor %}
+</table>
+<br><br>
+<a href="/npc/" class="btn btn-outline-secondary" role="button">Go Back</a>
+{% endblock content %}

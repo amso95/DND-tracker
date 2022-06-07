@@ -1,0 +1,16 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1> Edit your races</h1>
+<h4>Edit race name</h4>
+<form method="post">
+  {% csrf_token %}
+  {{raceForm|crispy }}
+  <button type="submit" name="btnform2" class="btn btn-outline-secondary">Save race</button>
+</form><br><br>
+<a href="/npc/list/race" class="btn btn-outline-secondary" role="button">Go Back</a>
+<br><br>
+<a href="/npc/" class="btn btn-outline-secondary" role="button">Go Home</a>
+{% endblock content %}

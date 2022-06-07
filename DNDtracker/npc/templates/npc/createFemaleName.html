@@ -1,0 +1,15 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1 style="text-shadow: 4px 4px #CEE3CE;"> Create female names</h1>
+<h4>Create female names linked to one race</h4>
+  <form method="post">
+      {% csrf_token %}
+      {{femaleNameForm|crispy }}
+      
+      <button type="submit" name="btnform5" class="btn btn-outline-secondary">Create female name</button>
+  </form><br><br>
+  <a href="/npc/" class="btn btn-outline-secondary" role="button">Go Back</a>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1 style="text-shadow: 4px 4px #CEE3CE;"> Edit family names</h1>
+<h4>Edit family names linked to one race</h4>
+<form method="post">
+    {% csrf_token %}
+    {{familyNamesForm|crispy }}
+    <button type="submit" class="btn btn-outline-secondary">Save family name</button>
+</form><br><br>
+<a href="/npc/list/familyname/" class="btn btn-outline-secondary" role="button">Go Back</a>
+<br><br>
+<a href="/npc/" class="btn btn-outline-secondary" role="button">Go Home</a>
+{% endblock content %}

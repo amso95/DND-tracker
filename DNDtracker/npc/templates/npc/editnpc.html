@@ -1,0 +1,17 @@
+{% extends "npc/base.html" %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Edit NPC</h1>
+<h4>Update your NPCs information here</h4>
+<form method="post">
+  {% csrf_token %}
+  {{npcForm|crispy }}
+<button type="submit" name="btnform1" class="btn btn-outline-secondary">Save NPC</button>
+<br><br>
+</form>
+<a href="/npc/list/npc/" class="btn btn-outline-secondary" role="button">Go Back</a>
+<br><br>
+<a href="/npc/" class="btn btn-outline-secondary" role="button">Go Home</a>
+{% endblock content %}
